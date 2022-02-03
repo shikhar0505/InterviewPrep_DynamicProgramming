@@ -11,3 +11,29 @@ Explanation: The minimum number of jumps to reach the last index is 2. Jump 1 st
 Example 2:
 Input: nums = [2,3,0,1,4]
 Output: 2
+
+public int jump(int[] nums)
+  {
+      // min steps to reach destination from index i
+      int[] steps = new int[nums.length];
+
+      // you're already at the destination
+      steps[nums.length - 1] = 0;
+
+      for (int i = nums.length - 2; i >= 0; i--)
+      {
+          int min = Integer.MAX_VALUE;   
+
+          for (int j = i + 1; j <= Math.min(i + nums[i], nums.length - 1); j++)
+          {
+              if (steps[j] == Integer.MAX_VALUE) continue;
+
+              int jump = 1 + steps[j];
+              if (jump < min) min = jump;
+          }
+
+          steps[i] = min;
+      }
+
+      return steps[0];
+  }
