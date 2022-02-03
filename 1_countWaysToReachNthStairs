@@ -5,3 +5,42 @@ You have been given a number of stairs.
 Initially, you are at the 0th stair, and you need to reach the Nth stair.
 Each time you can either climb one step or two steps.
 You are supposed to return the number of distinct ways in which you can climb from the 0th step to Nth step.
+
+
+// Recursion - Time limit exceeded
+
+public class Solution_Recursion
+{
+	public static int countDistinctWayToClimbStair(long nStairs)
+    {
+        return countDistinctWayToClimbStair(0, nStairs);
+	}
+    
+	private static int countDistinctWayToClimbStair(int currPos, long nStairs)
+    {
+        if (currPos == nStairs) return 1;
+        if (currPos > nStairs) return 0;
+        
+        return countDistinctWayToClimbStair(currPos + 1, nStairs)
+            + countDistinctWayToClimbStair(currPos + 2, nStairs);
+	}
+}
+
+
+// Dynamic Programming - problem same as Fibonacci
+
+public int climbStairs(int nStairs)
+{
+    if (nStairs == 1) return 1;
+    if (nStairs == 2) return 2;
+
+    int[] dp = new int[nStairs];
+    dp[0] = 1;
+    dp[1] = 2;
+
+    for (int i = 2; i < nStairs; i++)
+    {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[nStairs - 1];
+}
