@@ -23,3 +23,35 @@ private static int _knapsack_01(ArrayList<Integer> values, ArrayList<Integer> we
     dp[index][w - 1] = p;
     return p;
 }
+
+
+DP Iterative
+------------
+public static int knapsack_01(ArrayList<Integer> values, ArrayList<Integer> weights, int n, int w)
+{
+    // 2d array representing no. of items by weight limit or capacity of the sack
+    // n=4, w=5 => 2d array [n + 1][w + 1]
+    //    [0 0 0 0 0] or row representing no item, if sack capacity was 0, 1, 2 ... w  =>  all 0s ffor this row
+    //    [0 0 0 0 0]] or row representing item 1, if sack capacity was 0, 1, 2 ... w
+    //    [0 0 0 0 0] or row representing item 1 and 2
+    //    [0 0 0 0 0] or row representing item 1, 2 and 3
+    //    [0 0 0 0 0] or row representing item 1, 2, 3 and 4
+    int dp[][] = new int[n + 1][w + 1];
+    for (int i = 0; i <= n; i++) Arrays.fill(dp[i], 0);
+
+    for (int i = 1; i <= n; i++)
+    {
+        int weight = weights.get(i - 1);
+        int value = values.get(i - 1);
+        for (int j = 1; j <= w; j++)
+        {
+            if (j < weight) dp[i][j] = dp[i - 1][j];
+            else
+            {
+                dp[i][j] = Math.max(dp[i - 1][j], // didn't pick this one
+                                    value + dp[i - 1][j - weight]); // picked this one
+            }
+        }
+    }
+    return dp[n][w];
+}
