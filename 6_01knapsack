@@ -1,0 +1,25 @@
+A thief is robbing a store and can carry a maximum weight of ‘W’ into his knapsack. There are 'N' items available in the store and the weight and value of each item is known to the thief. Considering the constraints of the maximum weight that a knapsack can carry, you have to find the maximum profit that a thief can generate by stealing items.
+
+Note: The thief is not allowed to break the items.
+
+
+Recursive with memoization
+--------------------------
+public static int knapsack_01(ArrayList<Integer> values, ArrayList<Integer> weights, int n, int w)
+{
+    int[][] dp = new int[n][w];
+    for (int[] row : dp)
+    Arrays.fill(row, -1);
+    return _knapsack_01(values, weights, n, w, 0, dp);
+}
+
+private static int _knapsack_01(ArrayList<Integer> values, ArrayList<Integer> weights, int n, int w, int index, int[][] dp)
+{
+    if (index >= n || w == 0) return 0;
+    if (dp[index][w - 1] != -1) return dp[index][w - 1];
+    if (weights.get(index) > w) return maxProfit(values, weights, n, w, index + 1, dp);
+    int p = Math.max(values.get(index) + maxProfit(values, weights, n, w - weights.get(index), index + 1, dp),
+                     maxProfit(values, weights, n, w, index + 1, dp));
+    dp[index][w - 1] = p;
+    return p;
+}
